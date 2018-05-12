@@ -10,8 +10,8 @@ namespace GestaoDeUsuarios.ApplicationService.Services
     {
         private readonly IUserRepository _repository;
 
-        public UserApplicationService(IUserRepository repository) => _repository = repository;        
-
+        public UserApplicationService(IUserRepository repository) => _repository = repository;
+        
         public CommandResult Register(CreateUserCommand command)
         {
             var handler = new CreateUserHandler(_repository);
@@ -25,6 +25,36 @@ namespace GestaoDeUsuarios.ApplicationService.Services
                 _repository.Save();
 
             return retornoHandler;
-        }    
+        }
+
+        public CommandResult Update(UpdateUserCommand command)
+        {
+            var handler = new UpdateUserHandler(_repository);
+
+            var retornoHandler = handler.Handle(command);
+
+            if (!retornoHandler.Success)
+                retornoHandler.Notifications.ToList().ForEach(n => Notify(n.Property, n.Message));
+
+            if (Commit())
+                _repository.Save();
+
+            return retornoHandler;
+        }
+
+        public CommandResult Delete(DeleteUserCommand command)
+        {
+            var handler = new DeleteUserHandler(_repository);
+
+            var retornoHandler = handler.Handle(command);
+
+            if (!retornoHandler.Success)
+                retornoHandler.Notifications.ToList().ForEach(n => Notify(n.Property, n.Message));
+
+            if (Commit())
+                _repository.Save();
+
+            return retornoHandler;
+        }
     }
 }
