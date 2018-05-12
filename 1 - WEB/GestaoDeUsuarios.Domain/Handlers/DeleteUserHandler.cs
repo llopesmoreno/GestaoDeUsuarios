@@ -3,24 +3,25 @@ using GestaoDeUsuarios.Domain.Base;
 using GestaoDeUsuarios.Domain.Commands;
 using GestaoDeUsuarios.Shared.Resources;
 using GestaoDeUsuarios.Domain.Repositories;
+using GestaoDeUsuarios.Shared;
 
 namespace GestaoDeUsuarios.Domain.Handlers
 {
     public class DeleteUserHandler : Notifiable, 
-        IHandler<DeleteUserCommand>
+        IHandler<DeleteUserCommand, UserDTO>
     {
         public DeleteUserHandler(IUserRepository repository) => userRepository = repository;        
 
         private readonly IUserRepository userRepository;
 
-        public CommandResult Handle(DeleteUserCommand command)
+        public CommandResult<UserDTO> Handle(DeleteUserCommand command)
         {
             command.Validate();
 
             if (command.Invalid)
             {
                 AddNotifications(command);
-                return new CommandResult(false, "Dados de cadastro inválidos");
+                return new CommandResult<UserDTO>(false, "Dados de cadastro inválidos");
             }
 
             var usuarioDeletar = userRepository.GetById(command.Id);
@@ -33,7 +34,7 @@ namespace GestaoDeUsuarios.Domain.Handlers
 
             userRepository.Delete(usuarioDeletar);
             
-            return new CommandResult(true, Message.CadastroRealizadoComSucesso);
+            return new CommandResult<UserDTO>(true, Message.CadastroRealizadoComSucesso);
         }
     }
 }

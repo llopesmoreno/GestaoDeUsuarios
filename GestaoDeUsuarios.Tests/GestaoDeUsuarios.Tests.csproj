@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\UserTests.cs" />
+    <Compile Include="Models\HomeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +137,14 @@
     <ProjectReference Include="..\1 - WEB\GestaoDeUsuarios.Domain\GestaoDeUsuarios.Domain.csproj">
       <Project>{4c10ecad-627c-4939-b189-24c6250b13ed}</Project>
       <Name>GestaoDeUsuarios.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GestaoDeUsuarios.Shared\GestaoDeUsuarios.Shared.csproj">
+      <Project>{9aef4757-d8f6-4466-962d-0b115626d215}</Project>
+      <Name>GestaoDeUsuarios.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GestaoDeUsuarios.Site\GestaoDeUsuarios.Site.csproj">
+      <Project>{e06ab25a-2b7b-4e15-9f95-1a11611fc7d0}</Project>
+      <Name>GestaoDeUsuarios.Site</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

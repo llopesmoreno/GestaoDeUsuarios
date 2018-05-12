@@ -5,24 +5,25 @@ using GestaoDeUsuarios.Domain.Commands;
 using GestaoDeUsuarios.Shared.Resources;
 using GestaoDeUsuarios.Domain.Repositories;
 using GestaoDeUsuarios.Domain.Base.ValueObjects;
+using GestaoDeUsuarios.Shared;
 
 namespace GestaoDeUsuarios.Domain.Handlers
 {
     public class UpdateUserHandler : Notifiable, 
-        IHandler<UpdateUserCommand>
+        IHandler<UpdateUserCommand, UserDTO>
     {
         private readonly IUserRepository userRepository;
 
         public UpdateUserHandler(IUserRepository repository) => userRepository = repository; 
 
-        public CommandResult Handle(UpdateUserCommand command)
+        public CommandResult<UserDTO> Handle(UpdateUserCommand command)
         {
             command.Validate();
 
             if (command.Invalid)
             {
                 AddNotifications(command);
-                return new CommandResult(false, "Dados de cadastro inválidos");
+                return new CommandResult<UserDTO>(false, "Dados de cadastro inválidos");
             }
 
             var usuarioAtualizar = userRepository.GetById(command.Id);
@@ -35,13 +36,19 @@ namespace GestaoDeUsuarios.Domain.Handlers
             if (usuarioAtualizar.Invalid)
             {
                 AddNotifications(usuarioAtualizar);
-                return new CommandResult(false, "Dados de cadastro inválidos");
+                return new CommandResult<UserDTO>(false, "Dados de cadastro inválidos");
             }
 
             userRepository.Update(usuarioAtualizar);
 
+            var dto = new UserDTO(usuarioAtualizar.Name.FirstName, 
+                usuarioAtualizar.Name.LastName, 
+                usuarioAtualizar.CPF.Value, 
+                usuarioAtualizar.Telefone, 
+                usuarioAtualizar.Id.ToString());
+
             //Todo Criar resource.
-            return new CommandResult(true, "Registro Atualizado Com Sucesso", usuarioAtualizar);
+            return new CommandResult<UserDTO>(true, "Registro Atualizado Com Sucesso", dto);
         }
        
     }

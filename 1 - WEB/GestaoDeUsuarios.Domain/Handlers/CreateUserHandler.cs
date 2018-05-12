@@ -5,17 +5,18 @@ using GestaoDeUsuarios.Domain.Commands;
 using GestaoDeUsuarios.Shared.Resources;
 using GestaoDeUsuarios.Domain.Repositories;
 using GestaoDeUsuarios.Domain.Base.ValueObjects;
+using GestaoDeUsuarios.Shared;
 
 namespace GestaoDeUsuarios.Domain.Handlers
 {
     public class CreateUserHandler : Notifiable, 
-        IHandler<CreateUserCommand>
+        IHandler<CreateUserCommand, UserDTO>
     {
         public CreateUserHandler(IUserRepository repository) => userRepository = repository;        
 
         private readonly IUserRepository userRepository;
 
-        public CommandResult Handle(CreateUserCommand command)
+        public CommandResult<UserDTO> Handle(CreateUserCommand command)
         {
             command.Validate();
 
@@ -23,7 +24,7 @@ namespace GestaoDeUsuarios.Domain.Handlers
             {
                 AddNotifications(command);
                 //todo criar resource
-                return new CommandResult(false, "Dados de cadastro inválidos");
+                return new CommandResult<UserDTO>(false, "Dados de cadastro inválidos");
             }
 
             if (userRepository.CPFExists(new CPF(command.CPF)))
@@ -39,12 +40,18 @@ namespace GestaoDeUsuarios.Domain.Handlers
             {
                 AddNotifications(usuario);
                 //todo criar resource
-                return new CommandResult(false, "Dados de cadastro inválidos");
+                return new CommandResult<UserDTO>(false, "Dados de cadastro inválidos");
             }
 
             userRepository.Create(usuario);
 
-            return new CommandResult(true, Message.CadastroRealizadoComSucesso, usuario);
+            var dto = new UserDTO(usuario.Name.FirstName,
+                usuario.Name.LastName,
+                usuario.CPF.Value,
+                usuario.Telefone,
+                usuario.Id.ToString());
+
+            return new CommandResult<UserDTO>(true, Message.CadastroRealizadoComSucesso, dto);
         }
        
     }

@@ -3,16 +3,17 @@ using GestaoDeUsuarios.Domain.Commands;
 using GestaoDeUsuarios.Domain.Handlers;
 using GestaoDeUsuarios.Domain.Services;
 using GestaoDeUsuarios.Domain.Repositories;
+using GestaoDeUsuarios.Shared;
 
 namespace GestaoDeUsuarios.ApplicationService.Services
 {
-    public class UserApplicationService : ApplicationService, IUserApplicationService
+    public class UserApplicationService : ApplicationService, IUserApplicationService<UserDTO>
     {
         private readonly IUserRepository _repository;
 
         public UserApplicationService(IUserRepository repository) => _repository = repository;
         
-        public CommandResult Register(CreateUserCommand command)
+        public CommandResult<UserDTO> Register(CreateUserCommand command)
         {
             var handler = new CreateUserHandler(_repository);
 
@@ -27,7 +28,7 @@ namespace GestaoDeUsuarios.ApplicationService.Services
             return retornoHandler;
         }
 
-        public CommandResult Update(UpdateUserCommand command)
+        public CommandResult<UserDTO> Update(UpdateUserCommand command)
         {
             var handler = new UpdateUserHandler(_repository);
 
@@ -42,7 +43,7 @@ namespace GestaoDeUsuarios.ApplicationService.Services
             return retornoHandler;
         }
 
-        public CommandResult Delete(DeleteUserCommand command)
+        public CommandResult<UserDTO> Delete(DeleteUserCommand command)
         {
             var handler = new DeleteUserHandler(_repository);
 

@@ -5,15 +5,16 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using GestaoDeUsuarios.Domain.Commands;
 using GestaoDeUsuarios.Domain.Services;
+using GestaoDeUsuarios.Shared;
 
 namespace GestaoDeUsuarios.WebApi.Controllers
 {
     [RoutePrefix("api/user")]
     public class UserController : BaseController
     {
-        private readonly IUserApplicationService _service;
+        private readonly IUserApplicationService<UserDTO> _service;
 
-        public UserController(IUserApplicationService userService) => _service = userService;
+        public UserController(IUserApplicationService<UserDTO> userService) => _service = userService;
 
         [Route("getall")]
         [HttpPost]
@@ -37,7 +38,9 @@ namespace GestaoDeUsuarios.WebApi.Controllers
                    );
 
             var user = _service.Register(command);
-            return CreateResponse(HttpStatusCode.Created, user.Entitie);
+            var retorno = CreateResponse(HttpStatusCode.Created, user);
+
+            return retorno;
         }
 
         [Route("update")]
@@ -55,8 +58,8 @@ namespace GestaoDeUsuarios.WebApi.Controllers
                        telefone: (string)body.telefone
                    );
 
-            var user = _service.Update(command);
-            return CreateResponse(HttpStatusCode.OK, user.Entitie);
+            var result = _service.Update(command);
+            return CreateResponse(HttpStatusCode.OK, result);
         }
 
         [Route("delete")]

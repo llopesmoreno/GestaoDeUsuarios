@@ -7,7 +7,7 @@ using System.Web.Script.Serialization;
 
 namespace GestaoDeUsuarios.Web.Util
 {
-    public class ClientWebApi
+    public static class ClientWebApi
     {
         public static T RealizarRequisicao<T>(string endereco) where T : class
         {

@@ -1,10 +1,11 @@
 ﻿using GestaoDeUsuarios.Domain.Base.Commands;
 using GestaoDeUsuarios.Domain.Commands;
+using GestaoDeUsuarios.Shared.Base;
 
 namespace GestaoDeUsuarios.Domain.Base
 {
-    public interface IHandler<T> where T : ICommand
+    public interface IHandler<T, D> where T : ICommand where D : DTOBase
     {
-        CommandResult Handle(T command);
+        CommandResult<D> Handle(T command);
     }
 }
