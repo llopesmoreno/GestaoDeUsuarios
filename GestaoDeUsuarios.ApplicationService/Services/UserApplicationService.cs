@@ -4,6 +4,7 @@ using GestaoDeUsuarios.Domain.Commands;
 using GestaoDeUsuarios.Domain.Handlers;
 using GestaoDeUsuarios.Domain.Services;
 using GestaoDeUsuarios.Domain.Repositories;
+using GestaoDeUsuarios.Domain.Base.ValueObjects;
 
 namespace GestaoDeUsuarios.ApplicationService.Services
 {
@@ -56,6 +57,33 @@ namespace GestaoDeUsuarios.ApplicationService.Services
                 _repository.Save();
 
             return retornoHandler;
+        }
+
+        public CommandResult<UserDTO> GetAll()
+        {
+            var querie = new UserQueries(_repository);
+
+            var retorno = querie.GetAllUsers();
+
+            return retorno;
+        }
+
+        public CommandResult<UserDTO> GetByCPF(CPF cpf)
+        {
+            var querie = new UserQueries(_repository);
+
+            var retorno = querie.GetByCPF(cpf);
+
+            return retorno;
+        }
+
+        public CommandResult<UserDTO> GetByName(Name name)
+        {
+            var querie = new UserQueries(_repository);
+
+            var retorno = querie.GetByName(name);
+
+            return retorno;
         }
     }
 }

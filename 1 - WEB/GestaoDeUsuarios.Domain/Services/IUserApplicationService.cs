@@ -1,6 +1,6 @@
-﻿using GestaoDeUsuarios.Domain.Base;
+﻿using GestaoDeUsuarios.Shared.Base;
 using GestaoDeUsuarios.Domain.Commands;
-using GestaoDeUsuarios.Shared.Base;
+using GestaoDeUsuarios.Domain.Base.ValueObjects;
 
 namespace GestaoDeUsuarios.Domain.Services
 {
@@ -9,5 +9,8 @@ namespace GestaoDeUsuarios.Domain.Services
         CommandResult<D> Register(CreateUserCommand command);
         CommandResult<D> Update(UpdateUserCommand command);
         CommandResult<D> Delete(DeleteUserCommand command);
+        CommandResult<D> GetAll();
+        CommandResult<D> GetByCPF(CPF cpf);
+        CommandResult<D> GetByName(Name name);
     }
 }

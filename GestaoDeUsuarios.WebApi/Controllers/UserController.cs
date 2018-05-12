@@ -3,9 +3,10 @@ using System.Net;
 using System.Web.Http;
 using System.Net.Http;
 using System.Threading.Tasks;
+using GestaoDeUsuarios.Shared;
 using GestaoDeUsuarios.Domain.Commands;
 using GestaoDeUsuarios.Domain.Services;
-using GestaoDeUsuarios.Shared;
+using GestaoDeUsuarios.Domain.Base.ValueObjects;
 
 namespace GestaoDeUsuarios.WebApi.Controllers
 {
@@ -20,7 +21,39 @@ namespace GestaoDeUsuarios.WebApi.Controllers
         [HttpPost]
         public Task<HttpResponseMessage> GetAllUsers()
         {
-            return CreateResponse(HttpStatusCode.Created, new { message = "API online" });
+            var result = _service.GetAll();
+             
+            var response =  CreateResponse(HttpStatusCode.OK, result);
+
+            return response;
+        }
+
+        [Route("getbyname")]
+        [HttpPost]
+        public Task<HttpResponseMessage> GetByName(Name name)
+        {
+            if (name.Invalid)            
+                return CreateResponse(HttpStatusCode.BadRequest, new { success = false, erros = name.Notifications });
+            
+            var result = _service.GetByName(name);
+
+            var response = CreateResponse(HttpStatusCode.OK, result);
+
+            return response;
+        }
+
+        [Route("getbycpf")]
+        [HttpPost]
+        public Task<HttpResponseMessage> GetByCPF(CPF cpf)
+        {
+            if (cpf.Invalid)
+                return CreateResponse(HttpStatusCode.BadRequest, new { success = false, erros = cpf.Notifications });
+
+            var result = _service.GetByCPF(cpf);
+
+            var response = CreateResponse(HttpStatusCode.OK, result);
+
+            return response;
         }
 
         [Route("create")]

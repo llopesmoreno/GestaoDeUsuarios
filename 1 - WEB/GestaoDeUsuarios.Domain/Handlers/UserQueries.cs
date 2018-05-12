@@ -23,9 +23,9 @@ namespace GestaoDeUsuarios.Domain.Handlers
             return new CommandResult<UserDTO>(true, message, listDto: users);
         }
 
-        public CommandResult<UserDTO> GetByCPF(string cpf)
+        public CommandResult<UserDTO> GetByCPF(CPF cpf)
         {
-            var user = userRepository.GetByCPF(new CPF(cpf)).ToDTO();
+            var user = userRepository.GetByCPF(cpf).ToDTO();
                       
             //todo criar resource
             var message = user == null ? $"CPF Não encontrado" : "";
@@ -33,9 +33,9 @@ namespace GestaoDeUsuarios.Domain.Handlers
             return new CommandResult<UserDTO>(true, message, user);
         }
 
-        public CommandResult<UserDTO> GetByName(string nome, string sobrenome)
+        public CommandResult<UserDTO> GetByName(Name nome)
         {
-            var user = userRepository.GetByName(new Name(nome, sobrenome)).ToDTO();
+            var user = userRepository.GetByName(nome).ToDTO();
 
             //todo criar resource
             var message = user == null ? $"Nome Não encontrado" : "";
