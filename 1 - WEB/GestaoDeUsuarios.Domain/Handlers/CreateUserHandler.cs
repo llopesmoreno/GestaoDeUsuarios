@@ -18,18 +18,21 @@ namespace GestaoDeUsuarios.Domain.Handlers
 
         public CommandResult<UserDTO> Handle(CreateUserCommand command)
         {
+            var commandResult = new CommandResult<UserDTO>();
+
             command.Validate();
 
             if (command.Invalid)
             {
-                AddNotifications(command);
-                //todo criar resource
-                return new CommandResult<UserDTO>(false, "Dados de cadastro inválidos");
-            }
+                commandResult.AddNotifications(command);
+                return commandResult;
+            }             
 
             if (userRepository.CPFExists(new CPF(command.CPF)))
-                //todo criar resource
-                AddNotification("CPF", "Este CPF já está cadastrado!");
+            {
+                commandResult.AddNotification("CPF", "Este CPF já está cadastrado!");
+                return commandResult;
+            }
 
             var nome = new Name(command.Nome, command.Sobrenome);
             var cpf = new CPF(command.CPF);
@@ -38,9 +41,8 @@ namespace GestaoDeUsuarios.Domain.Handlers
 
             if (usuario.Invalid)
             {
-                AddNotifications(usuario);
-                //todo criar resource
-                return new CommandResult<UserDTO>(false, "Dados de cadastro inválidos");
+                commandResult.AddNotifications(usuario);
+                return commandResult;
             }
 
             userRepository.Create(usuario);
@@ -51,8 +53,11 @@ namespace GestaoDeUsuarios.Domain.Handlers
                 usuario.Telefone,
                 usuario.Id.ToString());
 
-            return new CommandResult<UserDTO>(true, Message.CadastroRealizadoComSucesso, dto);
-        }
-       
+            commandResult.Success = true;
+            commandResult.Message = Message.CadastroRealizadoComSucesso;
+            commandResult.Dto = dto;
+
+            return commandResult;
+        }       
     }
 }

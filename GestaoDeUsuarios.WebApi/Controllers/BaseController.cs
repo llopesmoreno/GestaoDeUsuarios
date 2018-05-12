@@ -22,7 +22,10 @@ namespace GestaoDeUsuarios.WebApi.Controllers
         {
             if (Notifications.HasNotifications())
                 ResponseMessage = Request.CreateResponse(HttpStatusCode.BadRequest,
-                    new { errors = Notifications.Notify() });
+                    new {
+                        success = false,
+                        errors = Notifications.Notify()
+                    });
             else
                 ResponseMessage = Request.CreateResponse(code, result);
 

@@ -1,9 +1,9 @@
 ﻿using System.Linq;
+using GestaoDeUsuarios.Shared;
 using GestaoDeUsuarios.Domain.Commands;
 using GestaoDeUsuarios.Domain.Handlers;
 using GestaoDeUsuarios.Domain.Services;
 using GestaoDeUsuarios.Domain.Repositories;
-using GestaoDeUsuarios.Shared;
 
 namespace GestaoDeUsuarios.ApplicationService.Services
 {

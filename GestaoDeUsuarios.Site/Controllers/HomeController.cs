@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using GestaoDeUsuarios.Shared;
+using GestaoDeUsuarios.Site.Models;
+using System.Web.Helpers;
+using System.Web.Mvc;
 
 namespace GestaoDeUsuarios.Site.Controllers
 {
@@ -7,6 +10,16 @@ namespace GestaoDeUsuarios.Site.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public JsonResult Cadastrar(UserDTO dto)
+        {
+            var model = new Home();
+
+            var result = model.AdicionarUsuario(dto);
+
+            return Json(result);
         }
     }
 }

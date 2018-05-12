@@ -1,9 +1,9 @@
 ﻿using Flunt.Notifications;
+using GestaoDeUsuarios.Shared;
 using GestaoDeUsuarios.Domain.Base;
 using GestaoDeUsuarios.Domain.Commands;
 using GestaoDeUsuarios.Shared.Resources;
 using GestaoDeUsuarios.Domain.Repositories;
-using GestaoDeUsuarios.Shared;
 
 namespace GestaoDeUsuarios.Domain.Handlers
 {
@@ -16,12 +16,14 @@ namespace GestaoDeUsuarios.Domain.Handlers
 
         public CommandResult<UserDTO> Handle(DeleteUserCommand command)
         {
+            var commandResult = new CommandResult<UserDTO>();
+
             command.Validate();
 
             if (command.Invalid)
             {
-                AddNotifications(command);
-                return new CommandResult<UserDTO>(false, "Dados de cadastro inválidos");
+                commandResult.AddNotifications(command);
+                return commandResult;
             }
 
             var usuarioDeletar = userRepository.GetById(command.Id);
@@ -29,12 +31,17 @@ namespace GestaoDeUsuarios.Domain.Handlers
             if(usuarioDeletar == null)
             {
                 //todo  criar resource
-                AddNotification("DeleteUserCommand.Id","Usuário inexiste");
+                commandResult.AddNotification("DeleteUserCommand.Id","Usuário inexiste");
+                return commandResult;
             }
 
             userRepository.Delete(usuarioDeletar);
-            
-            return new CommandResult<UserDTO>(true, Message.CadastroRealizadoComSucesso);
+
+            commandResult.Success = true;
+            //todo criar resource
+            commandResult.Message = "Usuario excluido com sucesso";
+
+            return commandResult;
         }
     }
 }

@@ -7,6 +7,7 @@ using DomainNotificationHelper.Handlers;
 using GestaoDeUsuarios.Domain.Repositories;
 using GestaoDeUsuariosFakeInfra.Repositories;
 using GestaoDeUsuarios.ApplicationService.Services;
+using GestaoDeUsuarios.Shared;
 
 namespace GestaoDeUsuariosCrossKutting
 {
@@ -15,7 +16,7 @@ namespace GestaoDeUsuariosCrossKutting
         public static void Register(UnityContainer container)
         {            
             container.RegisterType<IUserRepository, UserRepository>(new HierarchicalLifetimeManager());
-            container.RegisterType<IUserApplicationService, UserApplicationService>(new HierarchicalLifetimeManager());
+            container.RegisterType<IUserApplicationService<UserDTO>, UserApplicationService>(new HierarchicalLifetimeManager());
             container.RegisterType<IHandler<DomainNotification>, DomainNotificationHandler>(new HierarchicalLifetimeManager());
         }
     }

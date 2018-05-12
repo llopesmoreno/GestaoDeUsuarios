@@ -1,11 +1,10 @@
 ﻿using Flunt.Notifications;
+using GestaoDeUsuarios.Shared;
 using GestaoDeUsuarios.Domain.Base;
-using GestaoDeUsuarios.Domain.Entities;
 using GestaoDeUsuarios.Domain.Commands;
 using GestaoDeUsuarios.Shared.Resources;
 using GestaoDeUsuarios.Domain.Repositories;
 using GestaoDeUsuarios.Domain.Base.ValueObjects;
-using GestaoDeUsuarios.Shared;
 
 namespace GestaoDeUsuarios.Domain.Handlers
 {
@@ -18,37 +17,48 @@ namespace GestaoDeUsuarios.Domain.Handlers
 
         public CommandResult<UserDTO> Handle(UpdateUserCommand command)
         {
+            var commandResult = new CommandResult<UserDTO>();
+
             command.Validate();
 
             if (command.Invalid)
             {
-                AddNotifications(command);
-                return new CommandResult<UserDTO>(false, "Dados de cadastro inválidos");
+                commandResult.AddNotifications(command);
+                return commandResult;
             }
 
-            var usuarioAtualizar = userRepository.GetById(command.Id);
+            if (userRepository.CPFExists(new CPF(command.CPF)))
+            {
+                commandResult.AddNotification("CPF", "Este CPF já está cadastrado!");
+                return commandResult;
+            }
 
             var nome = new Name(command.Nome, command.Sobrenome);
             var cpf = new CPF(command.CPF);
+
+            var usuarioAtualizar = userRepository.GetById(command.Id);
 
             usuarioAtualizar.Update(nome, cpf, command.Telefone);
 
             if (usuarioAtualizar.Invalid)
             {
-                AddNotifications(usuarioAtualizar);
-                return new CommandResult<UserDTO>(false, "Dados de cadastro inválidos");
+                commandResult.AddNotifications(usuarioAtualizar);
+                return commandResult;
             }
 
             userRepository.Update(usuarioAtualizar);
 
-            var dto = new UserDTO(usuarioAtualizar.Name.FirstName, 
-                usuarioAtualizar.Name.LastName, 
-                usuarioAtualizar.CPF.Value, 
-                usuarioAtualizar.Telefone, 
+            var dto = new UserDTO(usuarioAtualizar.Name.FirstName,
+                usuarioAtualizar.Name.LastName,
+                usuarioAtualizar.CPF.Value,
+                usuarioAtualizar.Telefone,
                 usuarioAtualizar.Id.ToString());
 
-            //Todo Criar resource.
-            return new CommandResult<UserDTO>(true, "Registro Atualizado Com Sucesso", dto);
+            commandResult.Success = true;
+            commandResult.Message = Message.CadastroRealizadoComSucesso;
+            commandResult.Dto = dto;
+
+            return commandResult;
         }
        
     }

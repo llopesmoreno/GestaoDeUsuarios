@@ -30,5 +30,7 @@ namespace GestaoDeUsuarios.Domain.Base.ValueObjects
                 .IsNotNullOrEmpty(LastName, "Name.LastName", Message.SobrenomeInvalido)
             );
         }
+
+        public override string ToString() => $"{FirstName} {LastName}";
     }
 }

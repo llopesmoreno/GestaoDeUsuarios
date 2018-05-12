@@ -78,6 +78,10 @@
       <Project>{c525237e-0edc-4207-a539-8d5ccc7405e6}</Project>
       <Name>GestaoDeUsuarios.ApplicationService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GestaoDeUsuarios.Shared\GestaoDeUsuarios.Shared.csproj">
+      <Project>{9aef4757-d8f6-4466-962d-0b115626d215}</Project>
+      <Name>GestaoDeUsuarios.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GestaoDeUsuariosFakeInfra\GestaoDeUsuariosFakeInfra.csproj">
       <Project>{d9412496-c8f2-43aa-a428-7e470d1a48e7}</Project>
       <Name>GestaoDeUsuariosFakeInfra</Name>

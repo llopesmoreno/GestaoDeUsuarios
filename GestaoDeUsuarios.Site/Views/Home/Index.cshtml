@@ -4,33 +4,35 @@
 <div class="container">
     <div class="row">
         <button class="btn btn-success" data-toggle="modal" data-target="#modalCadastro">Adicionar</button>
-        <table class="table table-sm table-responsive ">
-            <thead>
-                <tr>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Sobrenome</th>
-                    <th scope="col">CPF</th>
-                    <th scope="col">Telefone</th>
-                    <th scope="col">Ação</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td scope="col">Lucas</td>
-                    <td scope="col">Lopes Moreno</td>
-                    <td scope="col">410.402.458-97</td>
-                    <td scope="col">11 4576 3826</td>
-                    <td class="text-center" scope="col">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAtualizacao">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                        </button>
-                        <button type="button" class="btn btn-danger" aria-label="Left Align">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <p>
+            <table class="table table-condensed table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Sobrenome</th>
+                        <th scope="col">CPF</th>
+                        <th scope="col">Telefone</th>
+                        <th scope="col">Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td scope="col">Lucas</td>
+                        <td scope="col">Lopes Moreno</td>
+                        <td scope="col">410.402.458-97</td>
+                        <td scope="col">11 4576 3826</td>
+                        <td scope="col">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAtualizacao">
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            </button>
+                            <button type="button" class="btn btn-danger" aria-label="Left Align">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </p>
     </div>
 </div>
 
@@ -45,16 +47,20 @@
             <div class="modal-body">
                 <form id="FormCadastro">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="name" placeholder="Nome">
+                        <input type="text" class="form-control" name="id" placeholder="id" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="nome" placeholder="Nome">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="Sobrenome" placeholder="SobreNome">
+                        <input type="text" class="form-control" name="sobrenome" placeholder="SobreNome">
                     </div>
                     <div class="form-group">
-                        <input type="number" class="form-control" id="Cpf" placeholder="CPF">
+                        <input type="number" class="form-control" name="cpf" placeholder="CPF">
                     </div>
                     <div class="form-group">
-                        <input type="number" class="form-control" id="Telefone" placeholder="Telefone">
+                        <input type="number" class="form-control" name="telefone" placeholder="Telefone">
                     </div>
                     <button type="submit" class="btn btn-primary">Gravar</button>
                     <button class="btn btn-danger" data-dismiss="modal">Cancelar</button>
@@ -74,19 +80,19 @@
             <div class="modal-body">
                 <form id="FormAtualizar">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="idAtualizar" placeholder="Nome" readonly>
+                        <input type="text" class="form-control" name="id" placeholder="Nome" readonly>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="nameAtualizar" placeholder="Nome">
+                        <input type="text" class="form-control" name="nome" placeholder="Nome">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="SobreNomeAtualizar" placeholder="SobreNome">
+                        <input type="text" class="form-control" name="sobrenome" placeholder="SobreNome">
                     </div>
                     <div class="form-group">
-                        <input type="number" class="form-control" id="CpfAtualizar" placeholder="CPF">
+                        <input type="number" class="form-control" name="cpf" placeholder="CPF">
                     </div>
                     <div class="form-group">
-                        <input type="number" class="form-control" id="TelefoneAtualizar" placeholder="Telefone">
+                        <input type="number" class="form-control" name="telefone" placeholder="Telefone">
                     </div>
                     <button type="submit" class="btn btn-primary">Gravar</button>
                     <button class="btn btn-danger" data-dismiss="modal">Cancelar</button>
@@ -96,34 +102,36 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function () {
+        $("#FormCadastro").submit(function (e) {
+            debugger;
+            var url = "@Url.Content("~/Home/Cadastrar")";
+            var dados = $("#FormCadastro").serialize();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: dados,
+                success: function (data) {
+                    if (data.success) {
+                        alert.text(data.message);
+                    } else {
+                        if (data.errors.length > 0) {
 
-@*<div class="modal-body">
-        <form id="FormAtualizar">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="name" placeholder="Nome">
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="SobreNome" placeholder="SobreNome">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <input type="number" class="form-control" id="Cpf" placeholder="CPF">
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <input type="number" class="form-control" id="Telefone" placeholder="Telefone">
-                    </div>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Gravar</button>
-            <button class="btn btn-danger close" data-dismiss="modal">Cancelar</button>
-        </form>
-    </div>*@
+                            var errorsList = '<div class="errors-messages">\
+                                              <p>Corrija os erros abaixo:</p>\
+                                                <ul>';
+                            for (var i in data.errors) {
+                                errorsList += "<li>- " + data.errors[i] + "</li>\n";
+                            }
+                            errorsList += '</ul>\
+                                       </div>';
+                            $('.errors').html(errorsList);
+                        }
+                    }
+                }
+            });
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+        });
+    });
+</script>
