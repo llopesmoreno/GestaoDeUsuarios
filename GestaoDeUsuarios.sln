@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestaoDeUsuariosCrossKuttin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestaoDeUsuarios.WebApi", "GestaoDeUsuarios.WebApi\GestaoDeUsuarios.WebApi.csproj", "{E52DE5A7-BE94-419B-B1F1-6D428A8844DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestaoDeUsuarios.Site", "GestaoDeUsuarios.Site\GestaoDeUsuarios.Site.csproj", "{E06AB25A-2B7B-4E15-9F95-1A11611FC7D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{E52DE5A7-BE94-419B-B1F1-6D428A8844DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E52DE5A7-BE94-419B-B1F1-6D428A8844DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E52DE5A7-BE94-419B-B1F1-6D428A8844DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E06AB25A-2B7B-4E15-9F95-1A11611FC7D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E06AB25A-2B7B-4E15-9F95-1A11611FC7D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E06AB25A-2B7B-4E15-9F95-1A11611FC7D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E06AB25A-2B7B-4E15-9F95-1A11611FC7D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +83,7 @@ Global
 		{C525237E-0EDC-4207-A539-8D5CCC7405E6} = {5D248B0D-0C9F-4F2D-9C3B-376C4F98CB7C}
 		{CF097DFA-1BC8-4987-98E7-1BC5D48AEA82} = {F92C3772-068E-490F-AEEA-7BB8D20FF1DD}
 		{E52DE5A7-BE94-419B-B1F1-6D428A8844DE} = {BBCD14F2-7ABE-40E9-A4AB-890D93303E82}
+		{E06AB25A-2B7B-4E15-9F95-1A11611FC7D0} = {D73B6B6C-1BC9-4056-9E8A-6E7878AD1216}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AEBED644-0FB6-4E34-9EE6-A07F3446372B}
