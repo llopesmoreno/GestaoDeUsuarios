@@ -41,7 +41,7 @@ namespace GestaoDeUsuarios.Domain.Handlers
             userRepository.Update(usuarioAtualizar);
 
             //Todo Criar resource.
-            return new CommandResult(true, "Registro Atualizado Com Sucesso");
+            return new CommandResult(true, "Registro Atualizado Com Sucesso", usuarioAtualizar);
         }
        
     }

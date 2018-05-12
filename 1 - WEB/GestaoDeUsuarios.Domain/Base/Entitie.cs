@@ -3,7 +3,7 @@ using Flunt.Notifications;
 
 namespace GestaoDeUsuarios.Domain.Base 
 {
-    public abstract class Entitie : Notifiable
+    public abstract class Entitie : Notifiable, IEntitie
     {
         protected Entitie() => Id = Guid.NewGuid();
 

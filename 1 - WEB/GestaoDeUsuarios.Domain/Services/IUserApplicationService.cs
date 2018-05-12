@@ -1,4 +1,5 @@
-﻿using GestaoDeUsuarios.Domain.Commands;
+﻿using GestaoDeUsuarios.Domain.Base;
+using GestaoDeUsuarios.Domain.Commands;
 
 namespace GestaoDeUsuarios.Domain.Services
 {

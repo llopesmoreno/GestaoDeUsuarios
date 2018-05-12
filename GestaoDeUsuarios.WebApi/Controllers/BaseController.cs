@@ -40,6 +40,8 @@ namespace GestaoDeUsuarios.WebApi.Controllers
             return Task.FromResult(ResponseMessage);
         }
 
+        public bool InvalidBody([FromBody] dynamic body) => body == null;
+
         protected override void Dispose(bool disposing) => Notifications.Dispose();
     }
 }

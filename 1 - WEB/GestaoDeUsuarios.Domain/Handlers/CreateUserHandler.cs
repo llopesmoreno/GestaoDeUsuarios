@@ -22,10 +22,12 @@ namespace GestaoDeUsuarios.Domain.Handlers
             if (command.Invalid)
             {
                 AddNotifications(command);
+                //todo criar resource
                 return new CommandResult(false, "Dados de cadastro inválidos");
             }
 
             if (userRepository.CPFExists(new CPF(command.CPF)))
+                //todo criar resource
                 AddNotification("CPF", "Este CPF já está cadastrado!");
 
             var nome = new Name(command.Nome, command.Sobrenome);
@@ -36,12 +38,13 @@ namespace GestaoDeUsuarios.Domain.Handlers
             if (usuario.Invalid)
             {
                 AddNotifications(usuario);
+                //todo criar resource
                 return new CommandResult(false, "Dados de cadastro inválidos");
             }
 
             userRepository.Create(usuario);
 
-            return new CommandResult(true, Message.CadastroRealizadoComSucesso);
+            return new CommandResult(true, Message.CadastroRealizadoComSucesso, usuario);
         }
        
     }
