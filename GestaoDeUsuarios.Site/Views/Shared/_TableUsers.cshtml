@@ -1,0 +1,45 @@
+﻿@model GestaoDeUsuarios.Site.Models.Home
+<table id="tableUsers" class="table table-condensed table-hover table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Sobrenome</th>
+            <th scope="col">CPF</th>
+            <th scope="col">Telefone</th>
+            <th scope="col">Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Users.Any())
+        {
+            foreach (var item in Model.Users)
+            {
+                <tr>
+                    <td scope="col">@item.nome</td>
+                    <td scope="col">@item.sobrenome</td>
+                    <td scope="col">@item.cpf</td>
+                    <td scope="col">@item.telefone</td>
+                    <td scope="col">
+                        <button id="@item.nome" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAtualizacao">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </button>
+                        <button name="@item.id" type="button" class="btn btn-danger" aria-label="Left Align">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">
+                    <label>Nenhum usuário cadastrado...</label>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+

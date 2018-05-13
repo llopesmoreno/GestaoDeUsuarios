@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using GestaoDeUsuarios.Shared;
 using GestaoDeUsuarios.Domain.Commands;
 using GestaoDeUsuarios.Domain.Services;
-using GestaoDeUsuarios.Domain.Base.ValueObjects;
+using GestaoDeUsuarios.Domain.Queries.Params;
 
 namespace GestaoDeUsuarios.WebApi.Controllers
 {
@@ -17,7 +17,7 @@ namespace GestaoDeUsuarios.WebApi.Controllers
 
         public UserController(IUserApplicationService<UserDTO> userService) => _service = userService;
 
-        [Route("getall")]
+        [Route("ObterTodos")]
         [HttpGet]
         public Task<HttpResponseMessage> GetAllUsers()
         {
@@ -28,35 +28,27 @@ namespace GestaoDeUsuarios.WebApi.Controllers
             return response;
         }
 
-        [Route("getbyname")]
+        [Route("ConsultarUsuario")]
         [HttpPost]
-        public Task<HttpResponseMessage> GetByName(Name name)
+        public Task<HttpResponseMessage> GetByParams([FromBody]dynamic body)
         {
-            if (name.Invalid)            
-                return CreateResponse(HttpStatusCode.BadRequest, new { success = false, erros = name.Notifications });
-            
-            var result = _service.GetByName(name);
+            if (InvalidBody(body))
+                return CreateResponse(HttpStatusCode.BadRequest, new { success = false, erros = "Dados inválidos" });
+
+            var queryUserParams = new QueryUserParams(
+                nome: (string)body.nome,
+                sobrenome: (string)body.sobrenome,
+                cpf: (string)body.cpf
+            );
+
+            var result = _service.GetByParams(queryUserParams);
 
             var response = CreateResponse(HttpStatusCode.OK, result);
 
             return response;
         }
 
-        [Route("getbycpf")]
-        [HttpPost]
-        public Task<HttpResponseMessage> GetByCPF(CPF cpf)
-        {
-            if (cpf.Invalid)
-                return CreateResponse(HttpStatusCode.BadRequest, new { success = false, erros = cpf.Notifications });
-
-            var result = _service.GetByCPF(cpf);
-
-            var response = CreateResponse(HttpStatusCode.OK, result);
-
-            return response;
-        }
-
-        [Route("create")]
+        [Route("CadastrarUsuario")]
         [HttpPost]
         public Task<HttpResponseMessage> CreateUser([FromBody]dynamic body)
         {
@@ -76,7 +68,7 @@ namespace GestaoDeUsuarios.WebApi.Controllers
             return retorno;
         }
 
-        [Route("update")]
+        [Route("AtualizarUsuario")]
         [HttpPost]
         public Task<HttpResponseMessage> UpdateUser([FromBody]dynamic body)
         {
@@ -95,7 +87,7 @@ namespace GestaoDeUsuarios.WebApi.Controllers
             return CreateResponse(HttpStatusCode.OK, result);
         }
 
-        [Route("delete")]
+        [Route("DeletarUsuario")]
         [HttpPost]
         public Task<HttpResponseMessage> DeleteUser([FromBody]dynamic body)
         {

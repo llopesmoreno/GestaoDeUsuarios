@@ -6,51 +6,10 @@
     <div class="row">
         <button class="btn btn-success" data-toggle="modal" data-target="#modalCadastro">Adicionar</button>
         <p>
-            <table class="table table-condensed table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Sobrenome</th>
-                        <th scope="col">CPF</th>
-                        <th scope="col">Telefone</th>
-                        <th scope="col">Ação</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.Users.Any())
-                    {
-                        foreach (var item in Model.Users)
-                        {
-                            <tr>
-                                <td scope="col">@item.nome</td>
-                                <td scope="col">@item.sobrenome</td>
-                                <td scope="col">@item.cpf</td>
-                                <td scope="col">@item.telefone</td>
-                                <td scope="col">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAtualizacao">
-                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-danger" aria-label="Left Align">
-                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                    </button>
-                                </td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="5">
-                                <label>Nenhum usuário cadastrado...</label>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+            @Html.Partial("_TableUsers", Model)
         </p>
     </div>
 </div>
-
 
 <div class="modal fade" id="modalCadastro" role="dialog">
     <div class="modal-dialog modal-sm">
@@ -64,7 +23,6 @@
                     <div class="form-group">
                         <input type="text" class="form-control" name="id" placeholder="id" readonly>
                     </div>
-
                     <div class="form-group">
                         <input type="text" class="form-control" name="nome" placeholder="Nome">
                     </div>
@@ -77,7 +35,7 @@
                     <div class="form-group">
                         <input type="number" class="form-control" name="telefone" placeholder="Telefone">
                     </div>
-                    <button type="submit" class="btn btn-primary">Gravar</button>
+                    <button id="BotaoCadastrar" type="button" class="btn btn-primary">Gravar</button>
                     <button class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                 </form>
             </div>
@@ -119,21 +77,35 @@
 
 <script>
     $(document).ready(function () {
-        $("#FormCadastro").submit(function (e) {
-            debugger;
+        $("#BotaoCadastrar").on("click", function (e) {
             var url = "@Url.Content("~/Home/Cadastrar")";
             var dados = $("#FormCadastro").serialize();
             $.ajax({
                 type: "POST",
                 url: url,
-                data: dados,
-                success: function (data) {
-                    if (data.success) {
-                        location.reload();                    
-                    }
-                }
+                data: dados
+            }).done(function (data) {
+                    tratarResultado(data);                
+            }).fail(function (data) {
+                alert("Falha na conexao com o servidor");
             });
-            e.preventDefault(); // avoid to execute the actual submit of the form.
+            e.preventDefault();            
         });
     });
+
+    function tratarResultado(data) {           
+        $("#modalCadastro").modal("hide");
+
+        if (data.Success) {
+            $('#tableUsers').load('@Url.Action("Index","Home")');
+            mostrarMensagem(data.message);
+        }
+        else {
+            var mensagem = "";
+            for (var i = 0; i < data.Errors.length; i++) {
+                var mensagem = mensagem + " " + data.Errors[i].value + ";";
+            }
+            mostrarMensagem(mensagem);
+        }
+    }
 </script>
