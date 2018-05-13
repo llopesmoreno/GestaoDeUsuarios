@@ -3,12 +3,14 @@ using GestaoDeUsuarios.Shared;
 using GestaoDeUsuarios.Domain.Commands;
 using GestaoDeUsuarios.Domain.Handlers;
 using GestaoDeUsuarios.Domain.Services;
+using GestaoDeUsuarios.Domain.Queries;
 using GestaoDeUsuarios.Domain.Repositories;
+using GestaoDeUsuarios.Domain.Queries.Params;
 using GestaoDeUsuarios.Domain.Base.ValueObjects;
 
 namespace GestaoDeUsuarios.ApplicationService.Services
 {
-    public class UserApplicationService : ApplicationService, IUserApplicationService<UserDTO>
+    public class UserApplicationService : ApplicationService<UserDTO>, IUserApplicationService<UserDTO>
     {
         private readonly IUserRepository _repository;
 
@@ -21,7 +23,10 @@ namespace GestaoDeUsuarios.ApplicationService.Services
             var retornoHandler = handler.Handle(command);
 
             if (!retornoHandler.Success)
-                retornoHandler.Notifications.ToList().ForEach(n => Notify(n.Property, n.Message));
+            {
+                Notify(retornoHandler);
+                return retornoHandler;
+            }
 
             if (Commit())            
                 _repository.Save();
@@ -36,7 +41,10 @@ namespace GestaoDeUsuarios.ApplicationService.Services
             var retornoHandler = handler.Handle(command);
 
             if (!retornoHandler.Success)
-                retornoHandler.Notifications.ToList().ForEach(n => Notify(n.Property, n.Message));
+            {
+                Notify(retornoHandler);
+                return retornoHandler;
+            }
 
             if (Commit())
                 _repository.Save();
@@ -51,7 +59,10 @@ namespace GestaoDeUsuarios.ApplicationService.Services
             var retornoHandler = handler.Handle(command);
 
             if (!retornoHandler.Success)
-                retornoHandler.Notifications.ToList().ForEach(n => Notify(n.Property, n.Message));
+            {
+                Notify(retornoHandler);
+                return retornoHandler;
+            }
 
             if (Commit())
                 _repository.Save();
@@ -68,7 +79,7 @@ namespace GestaoDeUsuarios.ApplicationService.Services
             return retorno;
         }
 
-        public CommandResult<UserDTO> GetByCPF(CPF cpf)
+        private CommandResult<UserDTO> GetByCPF(CPF cpf)
         {
             var querie = new UserQueries(_repository);
 
@@ -77,7 +88,7 @@ namespace GestaoDeUsuarios.ApplicationService.Services
             return retorno;
         }
 
-        public CommandResult<UserDTO> GetByName(Name name)
+        private CommandResult<UserDTO> GetByName(Name name)
         {
             var querie = new UserQueries(_repository);
 
@@ -85,5 +96,18 @@ namespace GestaoDeUsuarios.ApplicationService.Services
 
             return retorno;
         }
+
+        public CommandResult<UserDTO> GetByParams(QueryUserParams queryUserParams)
+        {
+            var result = new CommandResult<UserDTO>();
+
+            if (queryUserParams.Nome != null)
+                result = GetByName(queryUserParams.Nome);
+            else
+                result = GetByCPF(queryUserParams.Cpf);
+
+            return result;
+        }
+        
     }
 }

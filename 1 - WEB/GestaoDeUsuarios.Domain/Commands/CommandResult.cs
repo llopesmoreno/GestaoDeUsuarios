@@ -1,7 +1,8 @@
 ﻿using Flunt.Notifications;
-using GestaoDeUsuarios.Domain.Base.Commands;
-using GestaoDeUsuarios.Shared.Base;
+using GestaoDeUsuarios.Shared;
 using System.Collections.Generic;
+using GestaoDeUsuarios.Shared.Base;
+using GestaoDeUsuarios.Domain.Base.Commands;
 
 namespace GestaoDeUsuarios.Domain.Commands
 {
@@ -17,6 +18,7 @@ namespace GestaoDeUsuarios.Domain.Commands
             Message = message;
         }
 
+        public List<Error> Errors { get; set; }
         public List<T> ListDto { get; set; }
         public T Dto { get; set; }
         public bool Success { get; set; }

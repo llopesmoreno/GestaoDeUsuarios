@@ -10,6 +10,9 @@ namespace GestaoDeUsuarios.Site.Controllers
         {
             var model = new Home();
 
+            if (Request.IsAjaxRequest())
+                return PartialView("_TableUsers", model);
+
             return View(model);
         }
 
@@ -21,6 +24,6 @@ namespace GestaoDeUsuarios.Site.Controllers
             var result = model.AdicionarUsuario(dto);
 
             return Json(result);
-        }
+        }      
     }
 }

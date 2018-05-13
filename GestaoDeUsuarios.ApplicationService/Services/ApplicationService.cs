@@ -1,9 +1,14 @@
-﻿using DomainNotificationHelper;
+﻿using System.Linq;
+using GestaoDeUsuarios.Shared;
+using DomainNotificationHelper;
+using System.Collections.Generic;
+using GestaoDeUsuarios.Shared.Base;
 using DomainNotificationHelper.Events;
+using GestaoDeUsuarios.Domain.Commands;
 
 namespace GestaoDeUsuarios.ApplicationService.Services
 {
-    public class ApplicationService 
+    public class ApplicationService<T> where T : DTOBase
     {
         private readonly IHandler<DomainNotification> _notifications;
 
@@ -13,6 +18,13 @@ namespace GestaoDeUsuarios.ApplicationService.Services
         }
 
         public void Notify(string key, string message) => DomainEvent.Raise(new DomainNotification(key, message));
+
+        public void Notify(CommandResult<T> command)
+        {
+            command.Errors = new List<Error>();
+            command.Notifications.ToList()
+                .ForEach(n => command.Errors.Add(new Error(n.Property, n.Message)));
+        }
 
         public bool Commit()
         {

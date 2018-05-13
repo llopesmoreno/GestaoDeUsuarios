@@ -1,7 +1,7 @@
 ﻿using GestaoDeUsuarios.Shared;
 using System.Collections.Generic;
 using GestaoDeUsuarios.Domain.Commands;
-using GestaoDeUsuarios.Domain.Base.ValueObjects;
+using GestaoDeUsuarios.Domain.Queries.Params;
 using static GestaoDeUsuarios.Web.Util.ClientWebApi;
 
 namespace GestaoDeUsuarios.Site.Models
@@ -13,37 +13,48 @@ namespace GestaoDeUsuarios.Site.Models
 
         public Home()
         {
-            var retorno = RealizarRequisicao<CommandResult<UserDTO>>("http://localhost:53669/api/user/getall");
+            ObterTodos();
+        }
+
+        public void ObterTodos()
+        {
+            var retorno = RealizarRequisicao<CommandResult<UserDTO>>("http://localhost:53669/api/user/ObterTodos");
             Users = retorno.ListDto;
         }
 
         public CommandResult<UserDTO> AdicionarUsuario(UserDTO userDto)
         {
-            var retorno = RealizarRequisicao<CommandResult<UserDTO>, UserDTO>("http://localhost:53669/api/user/create", userDto);
+            var retorno = RealizarRequisicao<CommandResult<UserDTO>, UserDTO>("http://localhost:53669/api/user/CadastrarUsuario", userDto);
+
+            ObterTodos();
+
             return retorno;
         }
 
         public CommandResult<UserDTO> AtualizarDados(UserDTO userDto)
         {
-            var retorno = RealizarRequisicao<CommandResult<UserDTO>, UserDTO>("http://localhost:53669/api/user/update", userDto);
+            var retorno = RealizarRequisicao<CommandResult<UserDTO>, UserDTO>("http://localhost:53669/api/user/AtualizarUsuario", userDto);
+
+            ObterTodos();
+
             return retorno;
         }
 
         public CommandResult<UserDTO> Excluir(UserDTO userDto)
         {
-            var retorno = RealizarRequisicao<CommandResult<UserDTO>, UserDTO>("http://localhost:53669/api/user/delete", userDto);
+            var retorno = RealizarRequisicao<CommandResult<UserDTO>, UserDTO>("http://localhost:53669/api/user/DeletarUsuario", userDto);
+
+            ObterTodos();
+
             return retorno;
         }
 
-        public CommandResult<UserDTO> ObterPorNome(Name name)
+        public CommandResult<UserDTO> ObterPor(QueryUserParams parametros)
         {
-            var retorno = RealizarRequisicao<CommandResult<UserDTO>, Name>("http://localhost:53669/api/user/getbyname", name);
-            return retorno;
-        }
+            var retorno = RealizarRequisicao<CommandResult<UserDTO>, QueryUserParams>("http://localhost:53669/api/user/ConsultarUsuario", parametros);
 
-        public CommandResult<UserDTO> ObterPorCPF(CPF cpf)
-        {
-            var retorno = RealizarRequisicao<CommandResult<UserDTO>, CPF>("http://localhost:53669/api/user/getbycpf", cpf);
+            Users = retorno.ListDto;
+
             return retorno;
         }
     }

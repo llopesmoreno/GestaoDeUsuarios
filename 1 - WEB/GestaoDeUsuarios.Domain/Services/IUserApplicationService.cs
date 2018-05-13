@@ -1,6 +1,6 @@
 ﻿using GestaoDeUsuarios.Shared.Base;
 using GestaoDeUsuarios.Domain.Commands;
-using GestaoDeUsuarios.Domain.Base.ValueObjects;
+using GestaoDeUsuarios.Domain.Queries.Params;
 
 namespace GestaoDeUsuarios.Domain.Services
 {
@@ -10,7 +10,6 @@ namespace GestaoDeUsuarios.Domain.Services
         CommandResult<D> Update(UpdateUserCommand command);
         CommandResult<D> Delete(DeleteUserCommand command);
         CommandResult<D> GetAll();
-        CommandResult<D> GetByCPF(CPF cpf);
-        CommandResult<D> GetByName(Name name);
+        CommandResult<D> GetByParams(QueryUserParams queryUserParams);
     }
 }
