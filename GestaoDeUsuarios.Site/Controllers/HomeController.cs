@@ -1,7 +1,6 @@
-﻿using GestaoDeUsuarios.Shared;
+﻿using System.Web.Mvc;
+using GestaoDeUsuarios.Shared;
 using GestaoDeUsuarios.Site.Models;
-using System.Web.Helpers;
-using System.Web.Mvc;
 
 namespace GestaoDeUsuarios.Site.Controllers
 {
@@ -9,7 +8,9 @@ namespace GestaoDeUsuarios.Site.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            var model = new Home();
+
+            return View(model);
         }
 
         [HttpPost]

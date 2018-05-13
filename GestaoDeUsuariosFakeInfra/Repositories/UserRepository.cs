@@ -13,7 +13,7 @@ namespace GestaoDeUsuariosFakeInfra.Repositories
 
         public UserRepository() => Users = FakeDB.Users;        
 
-        public bool CPFExists(CPF cpf) => Users.Where(u => u.CPF == cpf).Any();        
+        public bool CPFExists(CPF cpf) => Users.Where(u => u.CPF.Value == cpf.Value).Any();        
 
         public void Create(User user) => Users.Add(user);
 

@@ -18,7 +18,7 @@ namespace GestaoDeUsuarios.WebApi.Controllers
         public UserController(IUserApplicationService<UserDTO> userService) => _service = userService;
 
         [Route("getall")]
-        [HttpPost]
+        [HttpGet]
         public Task<HttpResponseMessage> GetAllUsers()
         {
             var result = _service.GetAll();

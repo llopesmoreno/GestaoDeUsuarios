@@ -1,4 +1,5 @@
-﻿@{
+﻿@model GestaoDeUsuarios.Site.Models.Home
+@{
     ViewBag.Title = "Home Page";
 }
 <div class="container">
@@ -16,20 +17,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td scope="col">Lucas</td>
-                        <td scope="col">Lopes Moreno</td>
-                        <td scope="col">410.402.458-97</td>
-                        <td scope="col">11 4576 3826</td>
-                        <td scope="col">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAtualizacao">
-                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                            </button>
-                            <button type="button" class="btn btn-danger" aria-label="Left Align">
-                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                            </button>
-                        </td>
-                    </tr>
+                    @if (Model.Users.Any())
+                    {
+                        foreach (var item in Model.Users)
+                        {
+                            <tr>
+                                <td scope="col">@item.nome</td>
+                                <td scope="col">@item.sobrenome</td>
+                                <td scope="col">@item.cpf</td>
+                                <td scope="col">@item.telefone</td>
+                                <td scope="col">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAtualizacao">
+                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger" aria-label="Left Align">
+                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5">
+                                <label>Nenhum usuário cadastrado...</label>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </p>
@@ -49,7 +64,7 @@
                     <div class="form-group">
                         <input type="text" class="form-control" name="id" placeholder="id" readonly>
                     </div>
-                    
+
                     <div class="form-group">
                         <input type="text" class="form-control" name="nome" placeholder="Nome">
                     </div>
@@ -114,20 +129,7 @@
                 data: dados,
                 success: function (data) {
                     if (data.success) {
-                        alert.text(data.message);
-                    } else {
-                        if (data.errors.length > 0) {
-
-                            var errorsList = '<div class="errors-messages">\
-                                              <p>Corrija os erros abaixo:</p>\
-                                                <ul>';
-                            for (var i in data.errors) {
-                                errorsList += "<li>- " + data.errors[i] + "</li>\n";
-                            }
-                            errorsList += '</ul>\
-                                       </div>';
-                            $('.errors').html(errorsList);
-                        }
+                        location.reload();                    
                     }
                 }
             });
