@@ -15,7 +15,8 @@ namespace GestaoDeUsuarios.Domain.Repositories
         bool CPFExists(CPF cpf);
 
         void Create(User user);
-        void Update(User user);
+        bool Update(User user);
+        bool Update(User user, Guid id);
         void Delete(User user);
 
         void Save();

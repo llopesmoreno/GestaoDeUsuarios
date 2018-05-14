@@ -1,10 +1,12 @@
-﻿using Flunt.Notifications;
+﻿using Flunt.Validations;
+using Flunt.Notifications;
 using GestaoDeUsuarios.Shared;
 using GestaoDeUsuarios.Domain.Base;
 using GestaoDeUsuarios.Domain.Commands;
 using GestaoDeUsuarios.Shared.Resources;
 using GestaoDeUsuarios.Domain.Repositories;
 using GestaoDeUsuarios.Domain.Base.ValueObjects;
+using GestaoDeUsuarios.Domain.Entities;
 
 namespace GestaoDeUsuarios.Domain.Handlers
 {
@@ -27,20 +29,35 @@ namespace GestaoDeUsuarios.Domain.Handlers
                 return commandResult;
             }
 
+            var usuarioAtualizar = userRepository.GetById(command.Id);
+
+            AddNotifications(new Contract()
+                .Requires()
+                .IsNotNull(usuarioAtualizar, "Usuário", "Usuário não encontrado!")
+            );
+
+            if (Invalid)
+            {
+                commandResult.AddNotifications(this);
+                return commandResult;
+            }
+
             var nome = new Name(command.Nome, command.Sobrenome);
             var cpf = new CPF(command.CPF);
 
-            var usuarioAtualizar = userRepository.GetById(command.Id);
+            var dadosNovos = new User(nome, cpf, command.Telefone);
 
-            usuarioAtualizar.Update(nome, cpf, command.Telefone);
-
-            if (usuarioAtualizar.Invalid)
+            if (dadosNovos.Invalid)
             {
                 commandResult.AddNotifications(usuarioAtualizar);
                 return commandResult;
             }
 
-            userRepository.Update(usuarioAtualizar);
+            if (!userRepository.Update(dadosNovos, usuarioAtualizar.Id))
+            {
+                commandResult.AddNotification("CPF", "Este CPF já está cadastrado!");
+                return commandResult;
+            }
 
             var dto = new UserDTO(usuarioAtualizar.Name.FirstName,
                 usuarioAtualizar.Name.LastName,
@@ -53,7 +70,6 @@ namespace GestaoDeUsuarios.Domain.Handlers
             commandResult.Dto = dto;
 
             return commandResult;
-        }
-       
+        }       
     }
 }

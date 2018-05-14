@@ -13,7 +13,7 @@ namespace GestaoDeUsuariosFakeInfra.Repositories
 
         public UserRepository() => Users = FakeDB.Users;        
 
-        public bool CPFExists(CPF cpf) => Users.Where(u => u.CPF.Value == cpf.Value).Any();        
+        public bool CPFExists(CPF cpf) => Users.Where(u => u.CPF.Value == cpf.Value).Any();
 
         public void Create(User user) => Users.Add(user);
 
@@ -25,14 +25,43 @@ namespace GestaoDeUsuariosFakeInfra.Repositories
 
         public User GetById(Guid id) => Users.FirstOrDefault(u => u.Id == id);
 
-        public User GetByName(Name name) => Users.FirstOrDefault(u => u.Name == name);        
+        public User GetByName(Name name) => Users.FirstOrDefault(u => u.Name == name);
 
-        public void Update(User user)
+        public bool Update(User user)
         {
             var userToUpdate = GetById(user.Id);
+
             Delete(userToUpdate);
+
+            if (CPFExists(user.CPF))
+            {
+                Create(userToUpdate);
+                return false;
+            }
+
             userToUpdate.Update(user.Name, user.CPF, user.Telefone);
             Create(userToUpdate);
+
+            return true;
+        }
+
+        public bool Update(User user, Guid id)
+        {
+            var userToUpdate = GetById(id);
+
+            Delete(userToUpdate);
+
+            if (CPFExists(user.CPF))
+            {
+                Create(userToUpdate);
+                return false;
+            }
+
+            userToUpdate.Update(user.Name, user.CPF, user.Telefone);
+
+            Create(userToUpdate);
+
+            return true;
         }
 
         public void Save() => FakeDB.SaveChanges(Users);
