@@ -27,12 +27,6 @@ namespace GestaoDeUsuarios.Domain.Handlers
                 return commandResult;
             }
 
-            if (userRepository.CPFExists(new CPF(command.CPF)))
-            {
-                commandResult.AddNotification("CPF", "Este CPF já está cadastrado!");
-                return commandResult;
-            }
-
             var nome = new Name(command.Nome, command.Sobrenome);
             var cpf = new CPF(command.CPF);
 
@@ -55,7 +49,7 @@ namespace GestaoDeUsuarios.Domain.Handlers
                 usuarioAtualizar.Id.ToString());
 
             commandResult.Success = true;
-            commandResult.Message = Message.CadastroRealizadoComSucesso;
+            commandResult.Message = Message.AlteracaoRealizadaComSucesso;
             commandResult.Dto = dto;
 
             return commandResult;

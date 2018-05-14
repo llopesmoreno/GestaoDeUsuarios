@@ -14,16 +14,18 @@
         {
             foreach (var item in Model.Users)
             {
-                <tr>
-                    <td scope="col">@item.nome</td>
-                    <td scope="col">@item.sobrenome</td>
-                    <td scope="col">@item.cpf</td>
-                    <td scope="col">@item.telefone</td>
-                    <td scope="col">
-                        <button id="@item.nome" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAtualizacao">
+                
+                
+                <tr id="@item.id">
+                    <td id="@item.id tdn" scope="col">@item.nome</td>
+                    <td id="@item.id tds" scope="col">@item.sobrenome</td>
+                    <td id="@item.id tdc" scope="col">@item.cpf</td>
+                    <td id="@item.id tdt" scope="col">@item.telefone</td>
+                    <td id="@item.id td" scope="col">
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#modalAtualizacao" onclick="preencherCamposAtualizacao('@item.id')">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </button>
-                        <button name="@item.id" type="button" class="btn btn-danger" aria-label="Left Align">
+                        <button name="@item.id btnd" data-toggle="modal" data-target="#modalExclusao" type="button" class="btn btn-danger" aria-label="Left Align" onclick="preencherCamposExclusao('@item.id')">
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                         </button>
                     </td>

@@ -24,6 +24,26 @@ namespace GestaoDeUsuarios.Site.Controllers
             var result = model.AdicionarUsuario(dto);
 
             return Json(result);
-        }      
+        }
+
+        [HttpPost]
+        public JsonResult AtualizarDados(UserDTO dto)
+        {
+            var model = new Home();
+
+            var result = model.AtualizarDados(dto);
+
+            return Json(result);
+        }
+
+        [HttpPost]
+        public JsonResult Excuir(UserDTO dto)
+        {
+            var model = new Home();
+
+            var result = model.Excluir(dto);
+
+            return Json(result);
+        }
     }
 }

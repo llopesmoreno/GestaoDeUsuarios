@@ -62,8 +62,8 @@ namespace GestaoDeUsuarios.WebApi.Controllers
                        telefone: (string)body.telefone
                    );
 
-            var user = _service.Register(command);
-            var retorno = CreateResponse(HttpStatusCode.Created, user);
+            var result = _service.Register(command);
+            var retorno = CreateResponse(HttpStatusCode.Created, result);
 
             return retorno;
         }
@@ -96,9 +96,9 @@ namespace GestaoDeUsuarios.WebApi.Controllers
 
             var command = new DeleteUserCommand((Guid)body.id);
 
-            var user = _service.Delete(command);
+            var result = _service.Delete(command);
 
-            return CreateResponse(HttpStatusCode.OK, "");
+            return CreateResponse(HttpStatusCode.OK, result);
         }
     }
 }
