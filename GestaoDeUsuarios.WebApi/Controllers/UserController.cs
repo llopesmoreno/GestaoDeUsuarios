@@ -7,6 +7,7 @@ using GestaoDeUsuarios.Shared;
 using GestaoDeUsuarios.Domain.Commands;
 using GestaoDeUsuarios.Domain.Services;
 using GestaoDeUsuarios.Domain.Queries.Params;
+using GestaoDeUsuarios.Domain.Base.ValueObjects;
 
 namespace GestaoDeUsuarios.WebApi.Controllers
 {
@@ -35,11 +36,11 @@ namespace GestaoDeUsuarios.WebApi.Controllers
             if (InvalidBody(body))
                 return CreateResponse(HttpStatusCode.BadRequest, new { success = false, erros = "Dados inválidos" });
 
-            var queryUserParams = new QueryUserParams(
-                nome: (string)body.nome,
-                sobrenome: (string)body.sobrenome,
-                cpf: (string)body.cpf
-            );
+            var nome = body.nome == null ? "" : (string)body.nome;
+            var sobrenome = body.sobrenome == null ? "" : (string)body.sobrenome;
+            var cpf = body.cpf == null ? "" : (string)body.cpf;            
+
+            var queryUserParams = new QueryUserParams(nome, sobrenome, cpf);
 
             var result = _service.GetByParams(queryUserParams);
 

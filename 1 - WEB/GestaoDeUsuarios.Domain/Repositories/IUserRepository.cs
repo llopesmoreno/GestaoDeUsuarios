@@ -8,8 +8,8 @@ namespace GestaoDeUsuarios.Domain.Repositories
     public interface IUserRepository
     {
         ICollection<User> GetAll();
-        User GetByCPF(CPF cpf);
-        User GetByName(Name name);
+        List<User> GetByCPF(CPF cpf);
+        List<User> GetByName(Name name);
         User GetById(Guid id);
 
         bool CPFExists(CPF cpf);

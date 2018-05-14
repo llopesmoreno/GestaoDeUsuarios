@@ -101,7 +101,7 @@ namespace GestaoDeUsuarios.ApplicationService.Services
         {
             var result = new CommandResult<UserDTO>();
 
-            if (queryUserParams.Nome != null)
+            if (queryUserParams.Nome.Valid)
                 result = GetByName(queryUserParams.Nome);
             else
                 result = GetByCPF(queryUserParams.Cpf);

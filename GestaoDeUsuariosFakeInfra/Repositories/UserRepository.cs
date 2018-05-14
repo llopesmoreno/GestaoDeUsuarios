@@ -21,11 +21,11 @@ namespace GestaoDeUsuariosFakeInfra.Repositories
 
         public ICollection<User> GetAll() => Users;
 
-        public User GetByCPF(CPF cpf) => Users.FirstOrDefault(u => u.CPF == cpf);
+        public List<User> GetByCPF(CPF cpf) => Users.Where(u => u.CPF.Value == cpf.Value).ToList();
 
         public User GetById(Guid id) => Users.FirstOrDefault(u => u.Id == id);
 
-        public User GetByName(Name name) => Users.FirstOrDefault(u => u.Name == name);
+        public List<User> GetByName(Name name) => Users.Where(u => u.Name.ToString() == name.ToString()).ToList();
 
         public bool Update(User user)
         {

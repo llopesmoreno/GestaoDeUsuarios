@@ -1,20 +1,22 @@
 ﻿using System.Linq;
 using GestaoDeUsuarios.Shared;
 using GestaoDeUsuarios.Domain.Commands;
+using GestaoDeUsuarios.Domain.Entities;
 using GestaoDeUsuarios.Domain.Repositories;
 using GestaoDeUsuarios.Domain.Base.ValueObjects;
 using static GestaoDeUsuarios.Domain.Entities.Convert.ConvertUser;
+using System.Collections.Generic;
 
 namespace GestaoDeUsuarios.Domain.Queries
 {
-    public class UserQueries 
+    public class UserQueries
     {
         public UserQueries(IUserRepository repository) => userRepository = repository;
 
         private readonly IUserRepository userRepository;
 
         public CommandResult<UserDTO> GetAllUsers()
-        {   
+        {
             var users = userRepository.GetAll().ToList().ToDTO();
 
             //todo criar resource
@@ -25,22 +27,32 @@ namespace GestaoDeUsuarios.Domain.Queries
 
         public CommandResult<UserDTO> GetByCPF(CPF cpf)
         {
-            var user = userRepository.GetByCPF(cpf).ToDTO();
-                      
-            //todo criar resource
-            var message = user == null ? $"CPF Não encontrado" : "";
+            var user = userRepository.GetByCPF(cpf);
 
-            return new CommandResult<UserDTO>(true, message, user);
+            var retorno = ConverterUsuario(user);
+
+            return retorno;
         }
 
         public CommandResult<UserDTO> GetByName(Name nome)
         {
-            var user = userRepository.GetByName(nome).ToDTO();
+            var user = userRepository.GetByName(nome);
 
-            //todo criar resource
-            var message = user == null ? $"Nome Não encontrado" : "";
+            var retorno = ConverterUsuario(user);
 
-            return new CommandResult<UserDTO>(true, message, user);
+            return retorno;
+        }
+
+        private CommandResult<UserDTO> ConverterUsuario(List<User> users)
+        {
+            var message = string.Empty;
+            if (users.Any())
+                return new CommandResult<UserDTO>(true, message, listDto: users.ToDTO());
+
+            message = "Usuário não encontrado";
+            return new CommandResult<UserDTO>(true, message);
+
+
         }
     }
 }
